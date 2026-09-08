@@ -8,6 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .page-section { display: none; }
     .page-section.active { display: block; }
@@ -36,7 +38,7 @@
       <div class="flex items-center space-x-4">
         <button onclick="showPage('checkout-page')" class="relative p-2 hover:bg-slate-800 rounded-full transition-colors">
           <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-          <span class="absolute top-0 right-0 bg-indigo-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">2</span>
+          <span class="absolute top-0 right-0 bg-indigo-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold" id="cartCount">0</span>
         </button>
         <button onclick="showPage('checkout-page')" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition-colors">
           <i data-lucide="user" class="w-4 h-4"></i>
@@ -63,74 +65,20 @@
         </div>
       </div>
 
-      <!-- Featured Products Grid -->
+      <!-- Live Supabase Products Grid -->
       <div id="products-section" class="max-w-7xl mx-auto px-4 py-12">
-        <h2 class="text-2xl font-bold mb-6 text-gray-900 flex items-center gap-2">
-          <i data-lucide="sparkles" class="text-indigo-600"></i> Featured Products
-        </h2>
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <i data-lucide="sparkles" class="text-indigo-600"></i> Featured Products
+          </h2>
+          <button onclick="fetchLiveProducts()" class="text-sm bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded-lg flex items-center gap-1 font-semibold">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
+          </button>
+        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          
-          <!-- Product Card 1 -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60" alt="Product" class="w-full h-48 object-cover">
-            <div class="p-4 space-y-2">
-              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Electronics</span>
-              <h3 class="font-semibold text-gray-800">Wireless Noise-Canceling Headphones</h3>
-              <div class="flex justify-between items-center pt-2">
-                <span class="text-xl font-bold text-gray-900">$199.99</span>
-                <button onclick="showPage('checkout-page')" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors">
-                  <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 2 -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60" alt="Product" class="w-full h-48 object-cover">
-            <div class="p-4 space-y-2">
-              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Accessories</span>
-              <h3 class="font-semibold text-gray-800">Smart Fitness Watch Series 7</h3>
-              <div class="flex justify-between items-center pt-2">
-                <span class="text-xl font-bold text-gray-900">$149.50</span>
-                <button onclick="showPage('checkout-page')" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors">
-                  <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 3 -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60" alt="Product" class="w-full h-48 object-cover">
-            <div class="p-4 space-y-2">
-              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Footwear</span>
-              <h3 class="font-semibold text-gray-800">Pro Running Performance Shoes</h3>
-              <div class="flex justify-between items-center pt-2">
-                <span class="text-xl font-bold text-gray-900">$89.00</span>
-                <button onclick="showPage('checkout-page')" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors">
-                  <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 4 -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-            <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&auto=format&fit=crop&q=60" alt="Product" class="w-full h-48 object-cover">
-            <div class="p-4 space-y-2">
-              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Apparel</span>
-              <h3 class="font-semibold text-gray-800">Classic Urban Denim Jacket</h3>
-              <div class="flex justify-between items-center pt-2">
-                <span class="text-xl font-bold text-gray-900">$75.00</span>
-                <button onclick="showPage('checkout-page')" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors">
-                  <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
+        <!-- Dynamic Grid Container -->
+        <div id="liveProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="col-span-full text-center py-12 text-gray-500">Loading live products from database...</div>
         </div>
       </div>
     </section>
@@ -173,7 +121,7 @@
 
           <hr class="border-gray-100">
 
-          <!-- Shipping Location Details -->
+          <!-- Location Details -->
           <div>
             <h2 class="text-lg font-bold text-indigo-600 mb-4 flex items-center gap-2">
               <i data-lucide="map-pin"></i> Geographical & Address Information
@@ -187,7 +135,6 @@
                   <option value="PK" selected>Pakistan</option>
                   <option value="AE">United Arab Emirates</option>
                   <option value="SA">Saudi Arabia</option>
-                  <option value="US">United States</option>
                 </select>
               </div>
 
@@ -224,7 +171,7 @@
       </div>
     </section>
 
-    <!-- ================= PAGE 3: CUSTOMER SUPPORT & HELPDESK ================= -->
+    <!-- ================= PAGE 3: CUSTOMER SUPPORT ================= -->
     <section id="support-page" class="page-section">
       <div class="max-w-5xl mx-auto px-4 py-10 space-y-10">
         
@@ -233,7 +180,6 @@
           <p class="text-gray-500">Need help with your order or have pre-sales questions? Contact our team 24/7.</p>
         </div>
 
-        <!-- Contact Options -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center space-y-3">
             <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto">
@@ -263,70 +209,80 @@
           </div>
         </div>
 
-        <!-- Support Ticket Form -->
-        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm max-w-2xl mx-auto">
-          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <i data-lucide="help-circle" class="text-indigo-600"></i> Submit a Support Ticket
-          </h2>
-
-          <form class="space-y-4" onsubmit="event.preventDefault(); alert('Support Ticket Submitted!');">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Your Full Name</label>
-              <input type="text" placeholder="Full Name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Order ID (Optional)</label>
-              <input type="text" placeholder="e.g. #ORD-9842" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Inquiry Category</label>
-              <select class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-                <option>Pre-Sales Question</option>
-                <option>Order Delivery Status</option>
-                <option>Returns & Refunds</option>
-                <option>Payment Issues</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Message Detail</label>
-              <textarea rows="4" placeholder="Describe your issue or question in detail..." required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-            </div>
-
-            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-lg shadow-md transition-all">Submit Ticket</button>
-          </form>
-        </div>
-
       </div>
     </section>
 
   </main>
 
-  <!-- ================= FOOTER ================= -->
+  <!-- FOOTER -->
   <footer class="bg-slate-900 text-gray-400 py-8 border-t border-slate-800 mt-12">
     <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
       <p class="text-sm">© 2026 AuraMart Inc. All Rights Reserved.</p>
-      <div class="flex justify-center space-x-6 text-xs">
-        <a href="#" class="hover:underline">Privacy Policy</a>
-        <a href="#" class="hover:underline">Terms of Service</a>
-        <a href="#" class="hover:underline">Shipping & Delivery</a>
-      </div>
     </div>
   </footer>
 
-  <!-- Page Navigation JavaScript -->
+  <!-- Live Database Integration Script -->
   <script>
+    const SUPABASE_URL = 'https://hhywazbkgalioqqpuhyz.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoeXdhemJrZ2FsaW9xcXB1aHl6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODE0OTI0MCwiZXhwIjoyMTAzNzI1MjQwfQ.yHHUaGrOn8gKy_1kgujNXupqziJZmQalVIS0F9AU0sY';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let cartCount = 0;
+
     function showPage(pageId) {
-      document.querySelectorAll('.page-section').forEach(section => {
-        section.classList.remove('active');
-      });
+      document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Initialize Lucide Icons
+    async function fetchLiveProducts() {
+      const grid = document.getElementById('liveProductsGrid');
+      
+      const { data: products, error } = await _supabase
+        .from('products')
+        .select('*')
+        .order('id', { ascending: false });
+
+      if (error) {
+        grid.innerHTML = `<div class="col-span-full text-center text-red-500 py-8">Error loading products: ${error.message}</div>`;
+        return;
+      }
+
+      if (!products || products.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">No products published yet. Go to Admin Panel to add new products.</div>`;
+        return;
+      }
+
+      grid.innerHTML = products.map(item => `
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <img src="${item.image_url}" alt="${item.title}" class="w-full h-48 object-cover bg-gray-100" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+            <div class="p-4 space-y-2">
+              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">${item.category}</span>
+              <h3 class="font-semibold text-gray-800 line-clamp-1">${item.title}</h3>
+              <p class="text-xs text-gray-500 line-clamp-2">${item.description || ''}</p>
+            </div>
+          </div>
+          <div class="p-4 pt-0 flex justify-between items-center border-t border-gray-50 mt-2">
+            <span class="text-xl font-bold text-gray-900">$${item.price}</span>
+            <button onclick="addToCart('${item.title}')" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function addToCart(title) {
+      cartCount++;
+      document.getElementById('cartCount').innerText = cartCount;
+      alert(`"${title}" added to your shopping cart!`);
+    }
+
+    // Load Live Data on Startup
+    fetchLiveProducts();
     lucide.createIcons();
   </script>
 
