@@ -34,7 +34,7 @@
       <div class="max-w-7xl mx-auto text-center space-y-3">
         <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-indigo-500/30">Official Deals Hub</span>
         <h1 class="text-3xl md:text-5xl font-extrabold">Top Quality Products & Hot Deals</h1>
-        <p class="text-gray-300 text-sm max-w-xl mx-auto">Shop directly via Cash on Delivery or buy authentic items from AliExpress with guaranteed quality.</p>
+        <p class="text-gray-300 text-sm max-w-xl mx-auto">Shop directly via WhatsApp or buy authentic items directly from AliExpress with best affiliate deals.</p>
       </div>
     </div>
 
@@ -74,7 +74,8 @@
       }
 
       grid.innerHTML = products.map(item => {
-        const img1 = item.image_1 || item.image_url || 'https://via.placeholder.com/400';
+        const defaultImg = item.image_url || 'https://via.placeholder.com/400';
+        const img1 = item.image_1 || defaultImg;
         const img2 = item.image_2 || img1;
         const img3 = item.image_3 || img1;
         const img4 = item.image_4 || img1;
@@ -100,7 +101,7 @@
             <!-- Product Body Details -->
             <div class="p-5 space-y-3">
               <h3 class="font-bold text-gray-900 text-lg leading-snug">${item.title}</h3>
-              <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${item.description || 'No detailed description provided.'}</p>
+              <p class="text-xs text-gray-600 leading-relaxed">${item.description || 'No detailed description provided.'}</p>
             </div>
           </div>
 
