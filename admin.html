@@ -94,14 +94,17 @@
       btn.innerText = "Publishing Product...";
       btn.disabled = true;
 
+      const mainImage = document.getElementById('prodImg1').value;
+
       const payload = {
         title: document.getElementById('prodTitle').value,
         price: parseFloat(document.getElementById('prodPrice').value),
         category: document.getElementById('prodCategory').value,
-        image_1: document.getElementById('prodImg1').value,
-        image_2: document.getElementById('prodImg2').value || document.getElementById('prodImg1').value,
-        image_3: document.getElementById('prodImg3').value || document.getElementById('prodImg1').value,
-        image_4: document.getElementById('prodImg4').value || document.getElementById('prodImg1').value,
+        image_url: mainImage, // Fix for not-null constraint on image_url
+        image_1: mainImage,
+        image_2: document.getElementById('prodImg2').value || mainImage,
+        image_3: document.getElementById('prodImg3').value || mainImage,
+        image_4: document.getElementById('prodImg4').value || mainImage,
         affiliate_url: document.getElementById('prodAffiliateUrl').value,
         description: document.getElementById('prodDescription').value
       };
