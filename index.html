@@ -3,14 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AuraMart - Online Shopping Portal</title>
+  <title>AuraMart - AliExpress Affiliate & Online Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    .page-section { display: none; }
-    .page-section.active { display: block; }
-  </style>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen font-sans">
 
@@ -18,202 +14,49 @@
   <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
       
-      <a href="#" onclick="showPage('home-page')" class="flex items-center gap-2 font-bold text-xl tracking-wide text-indigo-400">
+      <a href="#" onclick="location.reload()" class="flex items-center gap-2 font-bold text-xl tracking-wide text-indigo-400">
         <i data-lucide="shopping-bag" class="w-6 h-6"></i>
-        <span>AuraMart</span>
+        <span>AuraMart <span class="text-xs bg-red-600 text-white font-semibold px-2 py-0.5 rounded-full">Affiliate</span></span>
       </a>
 
-      <nav class="hidden md:flex space-x-8 font-medium">
-        <button onclick="showPage('home-page')" class="hover:text-indigo-400 transition-colors">Home</button>
-        <button onclick="showPage('checkout-page')" class="hover:text-indigo-400 transition-colors">Checkout & Order</button>
-        <button onclick="showPage('auth-page')" class="hover:text-indigo-400 transition-colors">Profile / Account</button>
-        <button onclick="showPage('support-page')" class="hover:text-indigo-400 transition-colors">Customer Support</button>
-      </nav>
-
       <div class="flex items-center space-x-4">
-        <button onclick="showPage('checkout-page')" class="relative p-2 hover:bg-slate-800 rounded-full transition-colors">
-          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-          <span class="absolute top-0 right-0 bg-indigo-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold" id="cartCount">0</span>
-        </button>
-        <button onclick="showPage('auth-page')" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium text-sm transition-colors" id="userBtn">
-          <i data-lucide="user" class="w-4 h-4"></i>
-          <span id="userStatusText">Login / Register</span>
-        </button>
+        <a href="https://wa.me/923363152236" target="_blank" class="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-lg text-xs font-semibold text-white">
+          <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp Help
+        </a>
       </div>
 
     </div>
   </header>
 
+  <!-- HERO BANNER -->
   <main class="flex-grow">
+    <div class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 text-white py-12 px-4 border-b border-indigo-900/40">
+      <div class="max-w-7xl mx-auto text-center space-y-3">
+        <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-indigo-500/30">Official Deals Hub</span>
+        <h1 class="text-3xl md:text-5xl font-extrabold">Top Quality Products & Hot Deals</h1>
+        <p class="text-gray-300 text-sm max-w-xl mx-auto">Shop directly via Cash on Delivery or buy authentic items from AliExpress with guaranteed quality.</p>
+      </div>
+    </div>
 
-    <!-- PAGE 1: HOME PAGE -->
-    <section id="home-page" class="page-section active">
-      <div class="bg-gradient-to-r from-indigo-900 via-slate-800 to-indigo-950 text-white py-16 px-4">
-        <div class="max-w-7xl mx-auto text-center space-y-4">
-          <h1 class="text-4xl md:text-6xl font-extrabold">Next-Gen Shopping Experience</h1>
-          <p class="text-gray-300 text-lg max-w-2xl mx-auto">Get top quality products delivered fast in Daharki and across Pakistan with PKR pricing.</p>
-        </div>
+    <!-- PRODUCTS GRID SECTION -->
+    <div class="max-w-7xl mx-auto px-4 py-10">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <i data-lucide="sparkles" class="text-amber-500"></i> Trending Deals
+        </h2>
+        <button onclick="fetchLiveProducts()" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold px-3 py-2 rounded-lg flex items-center gap-1">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Items
+        </button>
       </div>
 
-      <div id="products-section" class="max-w-7xl mx-auto px-4 py-12">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <i data-lucide="sparkles" class="text-indigo-600"></i> Featured Products
-          </h2>
-          <button onclick="fetchLiveProducts()" class="text-sm bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded-lg flex items-center gap-1 font-semibold">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
-          </button>
-        </div>
-
-        <div id="liveProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="col-span-full text-center py-12 text-gray-500">Loading products...</div>
-        </div>
+      <div id="liveProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="col-span-full text-center py-12 text-gray-500 font-semibold">Loading live products...</div>
       </div>
-    </section>
-
-    <!-- PAGE 2: LOGIN / REGISTER / PROFILE -->
-    <section id="auth-page" class="page-section">
-      <div class="max-w-md mx-auto px-4 py-12">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-          <h2 class="text-2xl font-bold text-center text-gray-900 mb-6" id="authTitle">User Login / Register</h2>
-          
-          <form id="authForm" class="space-y-4">
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
-              <input type="email" id="authEmail" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
-              <input type="password" id="authPassword" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
-
-            <div class="flex gap-4 pt-2">
-              <button type="button" onclick="handleAuth('login')" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg shadow">Login</button>
-              <button type="button" onclick="handleAuth('signup')" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-lg shadow">Register</button>
-            </div>
-          </form>
-
-          <div id="loggedInView" class="hidden text-center space-y-4">
-            <p class="text-green-600 font-bold">✓ Account Authenticated</p>
-            <p class="text-gray-700 font-semibold" id="userEmailDisplay"></p>
-            <button onclick="handleLogout()" class="bg-red-500 hover:bg-red-600 text-white font-bold px-6 py-2 rounded-lg">Logout</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE 3: CHECKOUT & ORDER PLACEMENT -->
-    <section id="checkout-page" class="page-section">
-      <div class="max-w-4xl mx-auto px-4 py-10">
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900">Checkout & Delivery Details</h1>
-          <p class="text-gray-500">Provide your shipping address to confirm order.</p>
-        </div>
-
-        <form id="orderForm" class="space-y-6 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
-          <div>
-            <h2 class="text-lg font-bold text-indigo-600 mb-4 flex items-center gap-2">
-              <i data-lucide="user"></i> Contact & Address Info
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                <input type="text" id="custName" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                <input type="email" id="custEmail" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                <input type="tel" id="custPhone" placeholder="03363152236" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
-                <input type="text" id="custCountry" value="Pakistan" readonly class="w-full px-4 py-2 border bg-gray-50 rounded-lg outline-none">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">District *</label>
-                <input type="text" id="custDistrict" placeholder="e.g. Ghotki" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">City / Town *</label>
-                <input type="text" id="custCity" placeholder="e.g. Daharki" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Full Street Address *</label>
-              <textarea id="custAddress" rows="3" placeholder="House/Shop #, Street, Colony..." required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-            </div>
-          </div>
-
-          <div class="bg-gray-50 p-4 rounded-xl border flex justify-between items-center">
-            <span class="font-bold text-gray-800">Total Order Amount:</span>
-            <span class="text-2xl font-extrabold text-indigo-600">Rs. <span id="cartTotal">0</span></span>
-          </div>
-
-          <button type="submit" id="placeOrderBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-lg shadow-md transition-all flex justify-center items-center gap-2">
-            <i data-lucide="check-circle"></i> Confirm & Place Order (Cash on Delivery)
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <!-- PAGE 4: CUSTOMER SUPPORT PAGE -->
-    <section id="support-page" class="page-section">
-      <div class="max-w-5xl mx-auto px-4 py-12 space-y-10">
-        
-        <div class="text-center space-y-2">
-          <h1 class="text-3xl font-bold text-gray-900">Customer Support & Helpdesk</h1>
-          <p class="text-gray-500">Managed by Admin <strong>Ali Akbar Shar</strong>. Contact us 24/7 for order assistance.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          <!-- Direct Call -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center space-y-3">
-            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto">
-              <i data-lucide="phone-call" class="w-6 h-6"></i>
-            </div>
-            <h3 class="font-bold text-lg">Sales Support Call</h3>
-            <p class="text-sm text-gray-500">Direct phone contact number.</p>
-            <a href="tel:03363152236" class="font-bold text-indigo-600 hover:underline block text-lg">03363152236</a>
-          </div>
-
-          <!-- WhatsApp Direct Link -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center space-y-3">
-            <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto">
-              <i data-lucide="message-square" class="w-6 h-6"></i>
-            </div>
-            <h3 class="font-bold text-lg">WhatsApp Support</h3>
-            <p class="text-sm text-gray-500">Click to chat instantly on WhatsApp.</p>
-            <a href="https://wa.me/923363152236" target="_blank" class="font-bold text-green-600 hover:underline block text-lg">03363152236</a>
-          </div>
-
-          <!-- Office Location -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center space-y-3">
-            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto">
-              <i data-lucide="map-pin" class="w-6 h-6"></i>
-            </div>
-            <h3 class="font-bold text-lg">Store Address</h3>
-            <p class="text-sm text-gray-500">Main Office & Dispatch Hub</p>
-            <p class="font-bold text-gray-800 text-base">Daharki, Sindh, Pakistan</p>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
+    </div>
   </main>
 
-  <footer class="bg-slate-900 text-gray-400 py-8 border-t border-slate-800 mt-12">
-    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-      <p class="text-sm">© 2026 AuraMart Inc. All Rights Reserved.</p>
-      <p class="text-xs text-gray-500">Managed by Ali Akbar Shar | Daharki, Sindh</p>
-    </div>
+  <footer class="bg-slate-900 text-gray-400 py-6 border-t border-slate-800 text-center text-xs space-y-1">
+    <p>© 2026 AuraMart Store | Managed by Ali Akbar Shar (Daharki, Sindh)</p>
   </footer>
 
   <script>
@@ -221,135 +64,75 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoeXdhemJrZ2FsaW9xcXB1aHl6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODE0OTI0MCwiZXhwIjoyMTAzNzI1MjQwfQ.yHHUaGrOn8gKy_1kgujNXupqziJZmQalVIS0F9AU0sY';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let cartItems = [];
-    let grandTotal = 0;
-
-    function showPage(pageId) {
-      document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
     async function fetchLiveProducts() {
       const grid = document.getElementById('liveProductsGrid');
       const { data: products, error } = await _supabase.from('products').select('*').order('id', { ascending: false });
 
       if (error || !products || products.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">No products available.</div>`;
+        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12">No products published yet.</div>`;
         return;
       }
 
-      grid.innerHTML = products.map(item => `
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between">
+      grid.innerHTML = products.map(item => {
+        const img1 = item.image_1 || item.image_url || 'https://via.placeholder.com/400';
+        const img2 = item.image_2 || img1;
+        const img3 = item.image_3 || img1;
+        const img4 = item.image_4 || img1;
+        const affUrl = item.affiliate_url || '#';
+
+        return `
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow">
           <div>
-            <img src="${item.image_url}" class="w-full h-48 object-cover bg-gray-100">
-            <div class="p-4 space-y-2">
-              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">${item.category}</span>
-              <h3 class="font-semibold text-gray-800 line-clamp-1">${item.title}</h3>
+            <!-- Main Display Image -->
+            <div class="relative bg-gray-100 h-64 overflow-hidden">
+              <img id="main-img-${item.id}" src="${img1}" class="w-full h-full object-cover transition-all duration-300">
+              <span class="absolute top-3 left-3 bg-slate-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">${item.category || 'General'}</span>
+            </div>
+
+            <!-- 4 Thumbnail Selection Images -->
+            <div class="grid grid-cols-4 gap-1 p-2 bg-slate-50 border-b border-gray-100">
+              <img src="${img1}" onclick="swapImage('${item.id}', '${img1}')" class="h-14 w-full object-cover rounded cursor-pointer border hover:border-indigo-600">
+              <img src="${img2}" onclick="swapImage('${item.id}', '${img2}')" class="h-14 w-full object-cover rounded cursor-pointer border hover:border-indigo-600">
+              <img src="${img3}" onclick="swapImage('${item.id}', '${img3}')" class="h-14 w-full object-cover rounded cursor-pointer border hover:border-indigo-600">
+              <img src="${img4}" onclick="swapImage('${item.id}', '${img4}')" class="h-14 w-full object-cover rounded cursor-pointer border hover:border-indigo-600">
+            </div>
+
+            <!-- Product Body Details -->
+            <div class="p-5 space-y-3">
+              <h3 class="font-bold text-gray-900 text-lg leading-snug">${item.title}</h3>
+              <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${item.description || 'No detailed description provided.'}</p>
             </div>
           </div>
-          <div class="p-4 pt-0 flex justify-between items-center border-t border-gray-50 mt-2">
-            <span class="text-lg font-bold text-gray-900">Rs. ${item.price}</span>
-            <button onclick="addToCart('${item.title}', ${item.price})" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg text-xs font-semibold flex items-center gap-1">
-              <i data-lucide="shopping-bag" class="w-4 h-4"></i> Add
-            </button>
+
+          <!-- Price & Dual Buy Action Buttons -->
+          <div class="p-5 pt-0 space-y-3">
+            <div class="flex items-baseline justify-between border-t border-gray-100 pt-3">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Price</span>
+              <span class="text-xl font-extrabold text-indigo-600">Rs. ${item.price}</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <a href="${affUrl}" target="_blank" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1 shadow-sm transition-colors">
+                <i data-lucide="external-link" class="w-4 h-4"></i> Buy on AliExpress
+              </a>
+              <a href="https://wa.me/923363152236?text=I%20want%20to%20order:%20${encodeURIComponent(item.title)}" target="_blank" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1 shadow-sm transition-colors">
+                <i data-lucide="message-square" class="w-4 h-4"></i> Order via WhatsApp
+              </a>
+            </div>
           </div>
+
         </div>
-      `).join('');
+        `;
+      }).join('');
 
       lucide.createIcons();
     }
 
-    function addToCart(title, price) {
-      cartItems.push({ title, price });
-      grandTotal += price;
-      document.getElementById('cartCount').innerText = cartItems.length;
-      document.getElementById('cartTotal').innerText = grandTotal;
-      alert(`"${title}" added to cart!`);
+    function swapImage(productId, newUrl) {
+      document.getElementById(`main-img-${productId}`).src = newUrl;
     }
-
-    async function handleAuth(type) {
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-
-      if (!email || !password) { alert("Please enter email & password"); return; }
-
-      let res = (type === 'signup') 
-        ? await _supabase.auth.signUp({ email, password })
-        : await _supabase.auth.signInWithPassword({ email, password });
-
-      if (res.error) {
-        alert("Auth Error: " + res.error.message);
-      } else {
-        alert(type === 'signup' ? "Registration Successful!" : "Logged In Successfully!");
-        checkUserSession();
-      }
-    }
-
-    async function checkUserSession() {
-      const { data: { user } } = await _supabase.auth.getUser();
-      if (user) {
-        document.getElementById('authForm').classList.add('hidden');
-        document.getElementById('loggedInView').classList.remove('hidden');
-        document.getElementById('userEmailDisplay').innerText = user.email;
-        document.getElementById('custEmail').value = user.email;
-        document.getElementById('userStatusText').innerText = "My Account";
-      } else {
-        document.getElementById('authForm').classList.remove('hidden');
-        document.getElementById('loggedInView').classList.add('hidden');
-        document.getElementById('userStatusText').innerText = "Login / Register";
-      }
-    }
-
-    async function handleLogout() {
-      await _supabase.auth.signOut();
-      checkUserSession();
-    }
-
-    document.getElementById('orderForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      if(cartItems.length === 0) {
-        alert("Your cart is empty! Please add products first.");
-        return;
-      }
-
-      const btn = document.getElementById('placeOrderBtn');
-      btn.innerText = "Processing Order...";
-      btn.disabled = true;
-
-      const orderPayload = {
-        customer_name: document.getElementById('custName').value,
-        email: document.getElementById('custEmail').value,
-        phone: document.getElementById('custPhone').value,
-        country: document.getElementById('custCountry').value,
-        district: document.getElementById('custDistrict').value,
-        city: document.getElementById('custCity').value,
-        address: document.getElementById('custAddress').value,
-        total_amount: grandTotal
-      };
-
-      const { error } = await _supabase.from('orders').insert([orderPayload]);
-
-      if (error) {
-        alert("Order Error: " + error.message);
-      } else {
-        alert("🎉 Order Placed Successfully! Admin Ali Akbar Shar will process your order soon.");
-        cartItems = [];
-        grandTotal = 0;
-        document.getElementById('cartCount').innerText = '0';
-        document.getElementById('cartTotal').innerText = '0';
-        document.getElementById('orderForm').reset();
-        showPage('home-page');
-      }
-
-      btn.innerText = "Confirm & Place Order (Cash on Delivery)";
-      btn.disabled = false;
-    });
 
     fetchLiveProducts();
-    checkUserSession();
-    lucide.createIcons();
   </script>
 </body>
 </html>
